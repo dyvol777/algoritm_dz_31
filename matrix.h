@@ -17,7 +17,7 @@ public:
 	~matrix();
 	void input(std::ifstream&);
 	void deistv();
-	static void lvetv(matrix*, int, std::valarray<int>);
-	static void rvetv(matrix*, int, std::valarray<int>);
+	void lvetv(int, std::valarray<int>);
+	void rvetv(int, std::valarray<int>);
 	void output(std::ofstream&);
 };
