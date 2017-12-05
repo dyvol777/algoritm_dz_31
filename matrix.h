@@ -10,6 +10,7 @@ private:
 	std::valarray<std::valarray<int>> matr;
 	std::valarray<int> ogr;
 	std::valarray<int> optv;
+	std::valarray<std::string> oname;
 	int opt;
 public:
 	matrix();
@@ -17,7 +18,7 @@ public:
 	~matrix();
 	void input(std::ifstream&);
 	void deistv();
-	void lvetv(int, std::valarray<int>);
-	void rvetv(int, std::valarray<int>);
+	void lvetv(int, std::valarray<int>, int);
+	void rvetv(int, std::valarray<int>, int);
 	void output(std::ofstream&);
 };

@@ -6,16 +6,11 @@ matrix::matrix()
 {
 }
 
-matrix::matrix(int a, int b)
+matrix::matrix(int a, int b) : matr(std::valarray<int>(b), a), optv(b), ogr(b), oname(b)
 {
 	lines = a;
 	columns = b;
-	std::valarray<std::valarray<int>> mat(std::valarray<int>(b), a);
-	matr = std::move(mat);
-	std::valarray<int> q(b);
-	optv = q;
-	ogr = std::move(q);
-	opt = 99999;
+	opt = -1;
 }
 
 matrix::~matrix()
@@ -24,12 +19,34 @@ matrix::~matrix()
 
 void matrix::input(std::ifstream& a)
 {
+	std::valarray<std::valarray<int>> mat(std::valarray<int>(lines), columns);
+	for (int i = 0; i < columns; i++)
+	{
+		for (int j = 0; j < lines; j++)
+		{
+			a >> mat[i][j];
+		}
+		a >> ogr[i];
+		a >> oname[i];
+	}
+	for (int i = columns; i > 0; i--)
+	{
+		for (int j = 0; j < i - 1; j++)
+		{
+			if (ogr[j] > ogr[j + 1])
+			{
+				std::swap(ogr[j], ogr[j + 1]);
+				std::swap(oname[j], oname[j + 1]);
+				std::swap(mat[j], mat[j + 1]);
+			}
+		}
+	}//sort
 	//int b;
 	for (int i = 0; i < columns; i++)
 	{
 		for (int j = 0; j < lines; j++)
 		{
-			a >> matr[j][i];
+			matr[j][i] = mat[i][j];
 		}
 		a >> ogr[i];
 	}
@@ -39,23 +56,30 @@ void matrix::deistv()
 {
 	std::valarray<int> cur(columns);
 	for (auto& i : cur)
+	{
 		i = 0;
-	rvetv(0, cur);
+	}
+	for (auto&i : matr)
+	{
+		if (i.sum() < 1)
+			return;//3.1 yslovie
+	}
+	rvetv(0, cur, columns);
 }
 
-void matrix::rvetv(int a, std::valarray<int> b)
+void matrix::rvetv(int a, std::valarray<int> b, int gr)
 {
-	if (a < columns)
+	if (a < gr)
 	{
-		rvetv(a + 1, b);
+		rvetv(a + 1, b, gr);
 		b[a] = 1;
-		lvetv(a + 1, b);
+		lvetv(a + 1, b, gr);
 		//thr1.join();
 		//thr2.join();
 	}
 }
 
-void matrix::lvetv(int a, std::valarray<int> b)
+void matrix::lvetv(int a, std::valarray<int> b, int gr)
 {
 	std::valarray<int> tr(columns);
 	bool check = true;
@@ -69,17 +93,47 @@ void matrix::lvetv(int a, std::valarray<int> b)
 	if (check)
 	{
 		tr = b*ogr;
-		if (tr.sum() < opt)
+		if (opt == -1)
 		{
 			optv = b;
 			opt = tr.sum();
 		}
-	}
-	else if (a < columns)
+		else if (tr.sum() < opt)
+		{
+			optv = b;
+			opt = tr.sum();
+		}
+	}//1 yslovie
+	else if (a < gr)
 	{
-		rvetv(a + 1, b);
+		int k = (b*ogr).sum();
+		{
+			tr = b;
+			for (int i = a; i < columns; i++)
+			{
+				tr[i] = 1;
+			}
+			for (auto& i : matr)
+			{
+				if ((tr*i).sum() < 1)
+					gr = a;
+			}
+		}//3.2 yslovie
+		{
+			if (opt != -1)
+				for (int i = a; i < gr; i++)
+				{
+					k = k + ogr[i];
+					if (k > opt)
+					{
+						gr = i;
+						break;
+					}
+				}
+		}//2 yslovie
+		rvetv(a + 1, b, gr);
 		b[a] = 1;
-		lvetv(a + 1, b);
+		lvetv(a + 1, b, gr);
 		//thr1.join();
 		//thr2.join();
 	}
@@ -87,7 +141,8 @@ void matrix::lvetv(int a, std::valarray<int> b)
 
 void matrix::output(std::ofstream& a)
 {
-	for (auto i : optv)
-		a << i << ' ';
+	for (int i = 0; i < optv.size(); i++)
+		if (optv[i] == 1)
+			a << oname[i] << ' ';
 	a << std::endl << opt;
 }
