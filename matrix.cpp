@@ -102,7 +102,17 @@ void matrix::rvetv(int a, std::valarray<int> b, int gr)
 void matrix::lvetv(int a, std::valarray<int> b, int gr)
 {
 	std::valarray<int> tr(columns);
-	bool check = true;
+	bool check = false;
+
+	for (auto& i : matr)
+	{
+		if (i[a-1]>0)
+			check = true;
+	}
+	if (check != true)
+		return;
+
+	check = true;
 	for (auto& i : matr)
 	{
 		tr = i*b;
@@ -143,8 +153,8 @@ void matrix::lvetv(int a, std::valarray<int> b, int gr)
 			if (opt != -1)
 				for (int i = a; i < gr; i++)
 				{
-					k = k + ogr[i];
-					if (k > opt)
+					//k = k + ogr[i];
+					if (k + ogr[i] > opt)
 					{
 						gr = i;
 						break;
