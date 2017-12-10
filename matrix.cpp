@@ -19,15 +19,33 @@ matrix::~matrix()
 
 void matrix::input(std::ifstream& a)
 {
+	
 	std::valarray<std::valarray<int>> mat(std::valarray<int>(lines), columns);
+	
+	//std::getline(a, s1);
+	//if (!s1.empty())
+		//throw std::exception("bad input!");
 	for (int i = 0; i < columns; i++)
 	{
+		std::stringstream s;
+		std::string s1;
+		std::getline(a, s1);
+		//s.getline(a);
+		s << s1;
 		for (int j = 0; j < lines; j++)
 		{
-			a >> mat[i][j];
+			if (s.eof())
+				throw std::exception("bad input!");
+			s >> mat[i][j];
+			if ((mat[i][j] > 1) || (mat[i][j] < 0))
+				throw std::exception("incorrect value!");
 		}
-		a >> ogr[i];
-		a >> oname[i];
+		s >> ogr[i];
+		if (ogr[i] < 0)
+			throw std::exception("incorrect value!");
+		s >> oname[i];
+		if (!s.eof())
+			throw std::exception("bad input!");
 	}
 	for (int i = columns; i > 0; i--)
 	{
@@ -62,7 +80,7 @@ void matrix::deistv()
 	for (auto&i : matr)
 	{
 		if (i.sum() < 1)
-			return;//3.1 yslovie
+			throw std::exception("no solution!");//3.1 yslovie
 	}
 	rvetv(0, cur, columns);
 }
@@ -71,9 +89,11 @@ void matrix::rvetv(int a, std::valarray<int> b, int gr)
 {
 	if (a < gr)
 	{
-		rvetv(a + 1, b, gr);
+		
 		b[a] = 1;
 		lvetv(a + 1, b, gr);
+		b[a] = 0;
+		rvetv(a + 1, b, gr);
 		//thr1.join();
 		//thr2.join();
 	}
@@ -131,9 +151,11 @@ void matrix::lvetv(int a, std::valarray<int> b, int gr)
 					}
 				}
 		}//2 yslovie
-		rvetv(a + 1, b, gr);
+		
 		b[a] = 1;
 		lvetv(a + 1, b, gr);
+		b[a] = 0;
+		rvetv(a + 1, b, gr);
 		//thr1.join();
 		//thr2.join();
 	}

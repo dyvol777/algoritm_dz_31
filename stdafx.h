@@ -16,5 +16,7 @@
 #include <valarray>
 #include <thread>
 #include <numeric>
+#include <sstream>
+#include <exception>
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы

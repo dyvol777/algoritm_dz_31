@@ -11,16 +11,24 @@ int main()
 	
 	try
 	{
+		if (!fin.is_open())
+			throw std::exception("no file!");
 		int a, b;
-		fin >> a >> b;
+		bool che = fin.eof();
+		if (!(fin >> a >> b))
+			throw std::exception("empty file!");
+		std::string y;
+		std::getline(fin,y);
+		if (!y.empty())
+			throw std::exception("wrong input!");
 		matrix mat(a, b);
 		mat.input(fin);
 		mat.deistv();
 		mat.output(fout);
 	}
-	catch (...)
+	catch (std::exception e)
 	{
-		fout << "WTF?" << std::endl;
+		fout << "something going wrong! - " << e.what() << std::endl;
 	}
 	fin.close();
 	fout.close();
