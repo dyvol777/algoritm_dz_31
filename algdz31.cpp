@@ -1,7 +1,7 @@
 // algdz31.cpp: определяет точку входа для консольного приложения.
 //
 
-#include "stdafx.h"
+#include "header.h"
 #include "matrix.h"
 
 int main()
