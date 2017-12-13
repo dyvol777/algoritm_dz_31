@@ -20,15 +20,15 @@ int main()
 		try
 		{
 			if (!fin.is_open())
-				throw std::exception("no file!");
+				throw std::logic_error("no file!");
 			int a, b;
 			bool che = fin.eof();
 			if (!(fin >> a >> b))
-				throw std::exception("empty file!");
+				throw std::logic_error("empty file!");
 			std::string y;
 			std::getline(fin, y);
 			if (!y.empty())
-				throw std::exception("wrong input!");
+				throw std::logic_error("wrong input!");
 			matrix mat(a, b);
 			mat.input(fin);
 			mat.deistv();

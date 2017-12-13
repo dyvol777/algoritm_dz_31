@@ -24,7 +24,7 @@ void matrix::input(std::ifstream& a)
 	
 	//std::getline(a, s1);
 	//if (!s1.empty())
-		//throw std::exception("bad input!");
+		//throw std::logic_error("bad input!");
 	for (int i = 0; i < columns; i++)
 	{
 		std::stringstream s;
@@ -35,17 +35,17 @@ void matrix::input(std::ifstream& a)
 		for (int j = 0; j < lines; j++)
 		{
 			if (s.eof())
-				throw std::exception("bad input!");
+				throw std::logic_error("bad input!");
 			s >> mat[i][j];
 			if ((mat[i][j] > 1) || (mat[i][j] < 0))
-				throw std::exception("incorrect value!");
+				throw std::logic_error("incorrect value!");
 		}
 		s >> ogr[i];
 		if (ogr[i] < 0)
-			throw std::exception("incorrect value!");
+			throw std::logic_error("incorrect value!");
 		s >> oname[i];
 		if (!s.eof())
-			throw std::exception("bad input!");
+			throw std::logic_error("bad input!");
 	}
 	for (int i = columns; i > 0; i--)
 	{
@@ -80,7 +80,7 @@ void matrix::deistv()
 	for (auto&i : matr)
 	{
 		if (i.sum() < 1)
-			throw std::exception("no solution!");//3.1 yslovie
+			throw std::logic_error("no solution!");//3.1 yslovie
 	}
 	rvetv(0, cur, columns);
 }
