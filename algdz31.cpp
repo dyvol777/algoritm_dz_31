@@ -22,10 +22,10 @@ int main()
 		if (!y.empty())
 			throw std::logic_error("wrong input!");
 
-		std::valarray<std::valarray<std::string>> m(std::valarray<std::string>(a), b + 2);
-		for (int i = 0; i < a; i++)
+		std::valarray<std::valarray<std::string>> m(std::valarray<std::string>(a+2), b);
+		for (int i = 0; i < b; i++)
 		{
-			for (int j = 0; j < b + 2; j++)
+			for (int j = 0; j < a + 2; j++)
 			{
 				if (fin.eof())
 					throw std::logic_error("bad input!");
