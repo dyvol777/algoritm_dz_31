@@ -13,5 +13,6 @@
 #include <numeric>
 #include <sstream>
 #include <exception>
+#include <algorithm>
 
 // TODO: Установите здесь ссылки на дополнительные заголовки, требующиеся для программы
