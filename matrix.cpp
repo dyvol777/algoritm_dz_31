@@ -72,17 +72,18 @@ void matrix::input(std::ifstream& a)
 
 void matrix::input(std::valarray<std::valarray<std::string>> m)
 {
-	std::map<int, std::valarray<std::string>> a;
+	std::vector<std::pair<int, std::valarray<std::string>>> a;
 	for (auto i : m)
 	{
-		a.insert(std::make_pair(std::stoi(i[lines - 2]), i));
+		a.push_back(std::make_pair(std::stoi(i[lines - 2]), i));
 	}
-	//std::sort(a.begin(), a.end());
+	std::sort(a.begin(), a.end(), [](std::pair<int, std::valarray<std::string>> a, std::pair<int, std::valarray<std::string>> b) { return (a.first < b.first); });
 
 	for (int j = 0; j < columns; j++)
 	{
 		for (int i = 0; i < lines - 2; i++)
 		{
+			auto h = (a.begin() + j)[i];
 			matr[i][j] = std::stoi(a[j].second[i]);
 			if ((matr[i][j] > 1) || (matr[i][j] < 0))
 				throw std::logic_error("incorrect value!");
