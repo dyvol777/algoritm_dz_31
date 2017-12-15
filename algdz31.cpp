@@ -8,7 +8,7 @@ int main()
 {
 	std::ifstream fin("in.txt");
 	std::ofstream fout("out.txt");
-	
+
 	try
 	{
 		if (!fin.is_open())
@@ -18,13 +18,34 @@ int main()
 		if (!(fin >> a >> b))
 			throw std::logic_error("empty file!");
 		std::string y;
-		std::getline(fin,y);
+		std::getline(fin, y);
 		if (!y.empty())
 			throw std::logic_error("wrong input!");
+
+		std::valarray<std::valarray<std::string>> m(std::valarray<std::string>(a+2), b);
+		for (int i = 0; i < b; i++)
+		{
+			for (int j = 0; j < a + 2; j++)
+			{
+				if (fin.eof())
+					throw std::logic_error("bad input!");
+				fin >> m[i][j];
+			}
+		}
+		if (!fin.eof())
+			throw std::logic_error("bad input!");
+
 		matrix mat(a, b);
-		mat.input(fin);
+		mat.input(m);
 		mat.deistv();
-		mat.output(fout);
+		auto p = mat.output();
+
+		
+		for (auto i : p.second)
+		{
+			fout << i << ' ';
+		}
+		fout << std::endl << p.first;
 	}
 	catch (std::exception e)
 	{
@@ -32,6 +53,5 @@ int main()
 	}
 	fin.close();
 	fout.close();
-    return 0;
+	return 0;
 }
-

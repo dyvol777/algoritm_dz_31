@@ -1,4 +1,4 @@
-#pragma once
+//#pragma once
 
 #include "header.h"
 
@@ -14,11 +14,13 @@ private:
 	int opt;
 public:
 	matrix();
-	matrix(int,int);
+	matrix(int, int);
 	~matrix();
 	void input(std::ifstream&);
+	void input(std::valarray<std::valarray<std::string>>);
 	void deistv();
 	void lvetv(int, std::valarray<int>, int);
 	void rvetv(int, std::valarray<int>, int);
 	void output(std::ofstream&);
+	std::pair<int, std::vector<std::string>> output();
 };

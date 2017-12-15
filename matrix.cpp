@@ -19,12 +19,12 @@ matrix::~matrix()
 
 void matrix::input(std::ifstream& a)
 {
-	
+
 	std::valarray<std::valarray<int>> mat(std::valarray<int>(lines), columns);
-	
+
 	//std::getline(a, s1);
 	//if (!s1.empty())
-		//throw std::logic_error("bad input!");
+	//throw std::logic_error("bad input!");
 	for (int i = 0; i < columns; i++)
 	{
 		std::stringstream s;
@@ -59,7 +59,7 @@ void matrix::input(std::ifstream& a)
 			}
 		}
 	}//sort
-	//int b;
+	 //int b;
 	for (int i = 0; i < columns; i++)
 	{
 		for (int j = 0; j < lines; j++)
@@ -67,6 +67,31 @@ void matrix::input(std::ifstream& a)
 			matr[j][i] = mat[i][j];
 		}
 		a >> ogr[i];
+	}
+}
+
+void matrix::input(std::valarray<std::valarray<std::string>> m)
+{
+	std::vector<std::pair<int, std::valarray<std::string>>> a;
+	for (auto i : m)
+	{
+		a.push_back(std::make_pair(std::stoi(i[lines]), i));
+	}
+	std::sort(a.begin(), a.end(), 
+		[](std::pair<int, std::valarray<std::string>> a, std::pair<int, std::valarray<std::string>> b) { return (a.first < b.first); });
+
+	for (int j = 0; j < columns; j++)
+	{
+		for (int i = 0; i < lines; i++)
+		{
+			matr[i][j] = std::stoi(a[j].second[i]);
+			if ((matr[i][j] > 1) || (matr[i][j] < 0))
+				throw std::logic_error("incorrect value!");
+		}
+		ogr[j] = std::stoi(a[j].second[lines]);
+		if (ogr[j] < 0)
+			throw std::logic_error("incorrect value!");
+		oname[j] = a[j].second[lines + 1];
 	}
 }
 
@@ -89,7 +114,7 @@ void matrix::rvetv(int a, std::valarray<int> b, int gr)
 {
 	if (a < gr)
 	{
-		
+
 		b[a] = 1;
 		lvetv(a + 1, b, gr);
 		b[a] = 0;
@@ -106,7 +131,7 @@ void matrix::lvetv(int a, std::valarray<int> b, int gr)
 
 	for (auto& i : matr)
 	{
-		if (i[a-1]>0)
+		if (i[a - 1]>0)
 			check = true;
 	}
 	if (check != true)
@@ -115,14 +140,14 @@ void matrix::lvetv(int a, std::valarray<int> b, int gr)
 	check = true;
 	for (auto& i : matr)
 	{
-		tr = i*b;
+		tr = i * b;
 		if (tr.sum() < 1)
 			check = false;
 	}
 
 	if (check)
 	{
-		tr = b*ogr;
+		tr = b * ogr;
 		if (opt == -1)
 		{
 			optv = b;
@@ -161,7 +186,7 @@ void matrix::lvetv(int a, std::valarray<int> b, int gr)
 					}
 				}
 		}//2 yslovie
-		
+
 		b[a] = 1;
 		lvetv(a + 1, b, gr);
 		b[a] = 0;
@@ -177,4 +202,16 @@ void matrix::output(std::ofstream& a)
 		if (optv[i] == 1)
 			a << oname[i] << ' ';
 	a << std::endl << opt;
+}
+
+std::pair<int, std::vector<std::string>> matrix::output()
+{
+	std::vector<std::string> a;
+	for (auto i = 0; i < columns; i++)
+	{
+		if (optv[i] == 1)
+			a.push_back(oname[i]);
+	}
+	auto p = std::make_pair(opt, a);
+	return p;
 }
