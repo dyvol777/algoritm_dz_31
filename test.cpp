@@ -29,10 +29,30 @@ int main()
 			std::getline(fin, y);
 			if (!y.empty())
 				throw std::logic_error("wrong input!");
+
+			std::valarray<std::valarray<std::string>> m(std::valarray<std::string>(a + 2), b);
+			for (int i = 0; i < b; i++)
+			{
+				for (int j = 0; j < a + 2; j++)
+				{
+					if (fin.eof())
+						throw std::logic_error("bad input!");
+					fin >> m[i][j];
+				}
+			}
+			if (!fin.eof())
+				throw std::logic_error("bad input!");
+
 			matrix mat(a, b);
-			mat.input(fin);
+			mat.input(m);
 			mat.deistv();
-			mat.output(fout);
+			auto p = mat.output();
+
+			fout << p.first << std::endl;
+			for (auto i : p.second)
+			{
+				fout << i << ' ';
+			}
 		}
 		catch (std::exception e)
 		{
