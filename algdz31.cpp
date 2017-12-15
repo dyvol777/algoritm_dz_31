@@ -40,11 +40,12 @@ int main()
 		mat.deistv();
 		auto p = mat.output();
 
-		fout << p.first << std::endl;
+		
 		for (auto i : p.second)
 		{
 			fout << i << ' ';
 		}
+		fout << std::endl << p.first;
 	}
 	catch (std::exception e)
 	{
