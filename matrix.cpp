@@ -72,12 +72,12 @@ void matrix::input(std::ifstream& a)
 
 void matrix::input(std::valarray<std::valarray<std::string>> m)
 {
-	std::vector<std::pair<int, std::valarray<std::string>>> a;
+	std::map<int, std::valarray<std::string>> a;
 	for (auto i : m)
 	{
-		a.push_back(std::make_pair(std::stoi(i[lines - 2]), i));
+		a.insert(std::make_pair(std::stoi(i[lines - 2]), i));
 	}
-	std::sort(a.begin(), a.end());
+	//std::sort(a.begin(), a.end());
 
 	for (int j = 0; j < columns; j++)
 	{
